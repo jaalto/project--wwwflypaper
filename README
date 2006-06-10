@@ -55,7 +55,8 @@ Project Description
 
 Package install instructions
 
-        To install in /usr/local
+        The program is installed without the Perl .pl suffix. To
+        install in /usr/local
 
            $ make install
 

@@ -58,7 +58,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify these values.
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.3 2006/06/10 16:18:11 jaalto Exp $'; #font '
+my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.4 2006/06/10 20:20:51 jaalto Exp $'; #font '
 my $VERSION   = (split ' ', $FILE_ID)[2];
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
@@ -2122,11 +2122,11 @@ my @sname = qw
 
 =head1 NAME
 
-wwwflypaper.pl -  Generate a real-looking bogus web page
+wwwflypaper -  Generate a real-looking bogus web page
 
 =head1 SYNOPSIS
 
-  wwwflypaper.pl [OPTIONS] [URLROOT]
+  wwwflypaper(.pl) [OPTIONS] [URLROOT]
 
 =head1 OPTIONS
 

@@ -21,16 +21,26 @@ INSTALL_BIN	= $(INSTALL) -m 755
 INSTALL_SUID    = $(INSTALL) -m 4755
 INSTALL_DATA	= $(INSTALL) -m 644
 
-INSTALL_OBJS_BIN   = $(PACKAGE)
+INSTALL_OBJS_BIN   = $(PL)
+INSTALL_OBJS_TOBIN = $(PACKAGE)
 INSTALL_OBJS_MAN1  = doc/man/*.1
 INSTALL_OBJS_SHARE =
 
 # Tar exclude patterns
-TAREX = \
-  --exclude RCS  \
-  --exclude CVS  \
-  --exclude .svn \
-  --exclude .bzr
+TAR_OPT_NO	= --exclude='.build'	 \
+		  --exclude='.sinst'	 \
+		  --exclude='.inst'	 \
+		  --exclude='tmp'	 \
+		  --exclude='*.bak'	 \
+		  --exclude='*.log'	 \
+		  --exclude='*[~\#]'	 \
+		  --exclude='.\#*'	 \
+		  --exclude='CVS'	 \
+		  --exclude='RCS'	 \
+		  --exclude='.svn'	 \
+		  --exclude='.bzr'	 \
+		  --exclude='*.tar*'	 \
+		  --exclude='*.gz'
 
 MAKEFILE	= Makefile
 MANDIR1		= $(DESTDIR)$(man_prefix)/man/man1
@@ -49,6 +59,17 @@ CC		= gcc
 GCCFLAGS	= -Wall
 CFLAGS		= $(GCCFLAGS) $(DEBUG) -O2
 OBJS		= $(PACKAGE).c
+
+
+VERSION		= `date '+%Y.%m%d'`
+
+BUILDDIR	= .build
+PACKAGEVER	= $(PACKAGE)-$(VERSION)
+RELEASEDIR	= $(BUILDDIR)/$(PACKAGEVER)
+RELEASE_FILE	= $(PACKAGEVER).tar.gz
+RELEASE_FILE_PATH = $(BUILDDIR)/$(RELEASE_FILE)
+
+TAR_FILE_WORLD_LS  = `ls -t1 $(BUILDDIR)/*.tar.gz | sort -r | head -1`
 
 .PHONY: clean distclean install install-man install-bin
 
@@ -85,6 +106,22 @@ docs: $(DOCS) $(MANS)
 # Rule: doc - Generate or update documentation (if needed)
 doc: $(DOCS) doc/man/$(PACKAGE).1
 
+# Rule: release - [maintenance] Make a release
+release:
+	@$(INSTALL_BIN) -d $(RELEASEDIR)
+	@rm -rf $(RELEASEDIR)/*
+	@tar $(TAR_OPT_NO) -zcf - . | ( cd $(RELEASEDIR); tar -zxf - )
+	@cd $(BUILDDIR) &&						    \
+	$(TAR) $(TAR_OPT_NO) -zcf $(RELEASE_FILE) $(PACKAGEVER)
+	@echo $(RELEASE_FILE_PATH)
+	@tar -ztvf $(RELEASE_FILE_PATH)
+
+
+# Rule: release-list - [maintenance] List content of release.
+release-list:
+	$(TAR) -ztvf $(TAR_FILE_WORLD_LS)
+
+
 # Rule: clean - Remove temporary files
 clean:
 	-rm -f *[#~] *.\#* *.o *.exe core *.stackdump
@@ -98,7 +135,7 @@ install-etc:
 # Rule: install-bin - Install to BINDIR
 install-bin:
 	$(INSTALL_BIN) -d $(BINDIR)
-	$(INSTALL_BIN)    $(INSTALL_OBJS_BIN) $(BINDIR)
+	$(INSTALL_BIN)    $(PL) $(BINDIR)/$(INSTALL_OBJS_TOBIN)
 
 # Rule: install-bin - Install to MANDIR1
 install-man:
@@ -108,7 +145,7 @@ install-man:
 # Rule: install-doc - Install to DOCDIR1
 install-doc:
 	$(INSTALL_BIN) -d $(DOCDIR)
-	(cd doc && tar $(TAREX) -cf - . | (cd  $(DOCDIR) && tar -xf -))
+	(cd doc && tar $(TAR_OPT_NO) -cf - . | (cd  $(DOCDIR) && tar -xf -))
 
 # Rule: install-www - Install to WWWCGIDIR
 install-www:
