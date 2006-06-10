@@ -68,6 +68,18 @@ PACKAGEVER	= $(PACKAGE)-$(VERSION)
 RELEASEDIR	= $(BUILDDIR)/$(PACKAGEVER)
 RELEASE_FILE	= $(PACKAGEVER).tar.gz
 RELEASE_FILE_PATH = $(BUILDDIR)/$(RELEASE_FILE)
+RELEASE_LS  	= \
+  `ls -t1 $(BUILDDIR)/*tar* | sort -r | head -1`
+
+FTP             	  = ncftpput
+SOURCEFORGE_UPLOAD_HOST   = upload.sourceforge.net
+SOURCEFORGE_UPLOAD_DIR	  = /incoming
+
+SOURCEFORGE_DIR		  = /home/groups/w/ww/wwwflypaper
+SOURCEFORGE_SHELL	  = shell.sourceforge.net
+SOURCEFORGE_USER	  = $(USER)
+SOURCEFORGE_LOGIN	  = $(SOURCEFORGE_USER)@$(SOURCEFORGE_SHELL)
+SOURCEFORGE_SSH_DIR	  = $(SOURCEFORGE_LOGIN):$(SOURCEFORGE_DIR)
 
 TAR_FILE_WORLD_LS  = `ls -t1 $(BUILDDIR)/*.tar.gz | sort -r | head -1`
 
@@ -116,11 +128,17 @@ release:
 	@echo $(RELEASE_FILE_PATH)
 	@tar -ztvf $(RELEASE_FILE_PATH)
 
+# Rule: sf-upload-release - [Maintenence] Sourceforge; Upload documentation
+sf-upload-release:
+	@echo "-- run command --"
+	@echo $(FTP)			    \
+		$(SOURCEFORGE_UPLOAD_HOST)  \
+		$(SOURCEFORGE_UPLOAD_DIR)   \
+		$(RELEASE_LS)
 
 # Rule: release-list - [maintenance] List content of release.
 release-list:
 	$(TAR) -ztvf $(TAR_FILE_WORLD_LS)
-
 
 # Rule: clean - Remove temporary files
 clean:

@@ -129,13 +129,13 @@
 .\" ========================================================================
 .\"
 .IX Title "WWWFLYPAPER 1"
-.TH WWWFLYPAPER 1 "2006-06-10" "perl v5.8.8" "Generate fake web page (1.1)"
+.TH WWWFLYPAPER 1 "2006-06-10" "perl v5.8.8" "Generate fake web page (1.4)"
 .SH "NAME"
-wwwflypaper.pl \-  Generate a real\-looking bogus web page
+wwwflypaper \-  Generate a real\-looking bogus web page
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 .Vb 1
-\&  wwwflypaper.pl [OPTIONS] [URLROOT]
+\&  wwwflypaper(.pl) [OPTIONS] [URLROOT]
 .Ve
 .SH "OPTIONS"
 .IX Header "OPTIONS"
@@ -148,20 +148,19 @@ help in \s-1HTML\s0 format and \-\-help\-man in Unix manual page format.
 Print version information.
 .SH "ARGUMENTS"
 .IX Header "ARGUMENTS"
-.IP "\fB[\s-1URLROOT\s0]\fR" 4
-.IX Item "[URLROOT]"
+.IP "\fB\s-1URLROOT\s0\fR" 4
+.IX Item "URLROOT"
 In the generated web pages there are links that point back to the
 page. These links (A \s-1HREF\s0's in \s-1HTML\s0) are by default prefixed with
 \&\f(CW\*(C`/email\*(C'\fR. If the trap in the web server is put somewhere else, the
 change must be told to the program in order to generate correct links.
+See exmaples for more information.
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-Generate a random list of real-looking bogus email addresses in the
-form of an \s-1HTML\s0 mailing list page. This program is designed to be as
-fast as possible and self containing. No separate dictionary files are
-needed.
+Generate random list of real-looking bogus email addresses in the
+form of a \s-1HTML\s0 mailing list page.
 .PP
-Create dynamically Web pages full of convincingly lifelike \- but
+The page is dynamically made and full of convincingly lifelike \- but
 completely bogus \- email addresses that spambots can pick up and add
 to their hitlists. The page also contains randomly generated links
 that the bot inevitably follows \- links that loop right back to the
@@ -170,7 +169,9 @@ addresses.
 .PP
 This program can be used to combat the junk email problem by
 effectively poisoning the databases of those gathering programs that
-regularly scan web pages looking for email addresses to harvest.
+regularly scan web pages looking for email addresses to harvest. The
+program is designed to be as fast as possible and self containing. No
+separate dictionary files are needed.
 .PP
 The restrictive licensing terms of \fIwpoison\fR\|(1) inspired to
 write a free alternative \*(-- this program.
@@ -180,7 +181,7 @@ Let's suppose that local web server's robots file is located at
 \&\fI$WWWROOT/robots.txt\fR announces a forbidden fruit. The well behaving
 search robots will ignore all URLs that are banned by the robots file.
 But the email harvesting programs will surely want to take a look into
-the URLs mentioned in one or more \fIDisallow\fR lines in the
+the URLs mentioned in one or more \fBDisallow\fR lines in the
 \&\fIrobots.txt\fR file:
 .PP
 .Vb 2
@@ -225,7 +226,7 @@ server is used. Like if the trap were in:
 .Ve
 .SH "TROUBLESHOOTING"
 .IX Header "TROUBLESHOOTING"
-None,
+None.
 .SH "ENVIRONMENT"
 .IX Header "ENVIRONMENT"
 None used.

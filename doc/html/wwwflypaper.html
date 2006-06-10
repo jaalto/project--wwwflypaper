@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>wwwflypaper.pl -  Generate a real-looking bogus web page</title>
+<title>wwwflypaper -  Generate a real-looking bogus web page</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rev="made" href="mailto:root@localhost" />
 </head>
@@ -40,13 +40,13 @@
 </p>
 <hr />
 <h1><a name="name">NAME</a></h1>
-<p>wwwflypaper.pl -  Generate a real-looking bogus web page</p>
+<p>wwwflypaper -  Generate a real-looking bogus web page</p>
 <p>
 </p>
 <hr />
 <h1><a name="synopsis">SYNOPSIS</a></h1>
 <pre>
-  wwwflypaper.pl [OPTIONS] [URLROOT]</pre>
+  wwwflypaper(.pl) [OPTIONS] [URLROOT]</pre>
 <p>
 </p>
 <hr />
@@ -71,13 +71,14 @@ help in HTML format and --help-man in Unix manual page format.</p>
 <hr />
 <h1><a name="arguments">ARGUMENTS</a></h1>
 <dl>
-<dt><strong><a name="item__5burlroot_5d"><strong>[URLROOT]</strong></a></strong>
+<dt><strong><a name="item_urlroot"><strong>URLROOT</strong></a></strong>
 
 <dd>
 <p>In the generated web pages there are links that point back to the
 page. These links (A HREF's in HTML) are by default prefixed with
 <code>/email</code>. If the trap in the web server is put somewhere else, the
-change must be told to the program in order to generate correct links.</p>
+change must be told to the program in order to generate correct links.
+See exmaples for more information.</p>
 </dd>
 </li>
 </dl>
@@ -85,11 +86,9 @@ change must be told to the program in order to generate correct links.</p>
 </p>
 <hr />
 <h1><a name="description">DESCRIPTION</a></h1>
-<p>Generate a random list of real-looking bogus email addresses in the
-form of an HTML mailing list page. This program is designed to be as
-fast as possible and self containing. No separate dictionary files are
-needed.</p>
-<p>Create dynamically Web pages full of convincingly lifelike - but
+<p>Generate random list of real-looking bogus email addresses in the
+form of a HTML mailing list page.</p>
+<p>The page is dynamically made and full of convincingly lifelike - but
 completely bogus - email addresses that spambots can pick up and add
 to their hitlists. The page also contains randomly generated links
 that the bot inevitably follows - links that loop right back to the
@@ -97,7 +96,9 @@ same page, now re-armed with a fresh set of random fake email
 addresses.</p>
 <p>This program can be used to combat the junk email problem by
 effectively poisoning the databases of those gathering programs that
-regularly scan web pages looking for email addresses to harvest.</p>
+regularly scan web pages looking for email addresses to harvest. The
+program is designed to be as fast as possible and self containing. No
+separate dictionary files are needed.</p>
 <p>The restrictive licensing terms of <code>wpoison(1)</code> inspired to
 write a free alternative -- this program.</p>
 <p>
@@ -108,7 +109,7 @@ write a free alternative -- this program.</p>
 <em>$WWWROOT/robots.txt</em> announces a forbidden fruit. The well behaving
 search robots will ignore all URLs that are banned by the robots file.
 But the email harvesting programs will surely want to take a look into
-the URLs mentioned in one or more <em>Disallow</em> lines in the
+the URLs mentioned in one or more <strong>Disallow</strong> lines in the
 <em>robots.txt</em> file:</p>
 <pre>
     User-agent: *
@@ -142,7 +143,7 @@ server is used. Like if the trap were in:</p>
 </p>
 <hr />
 <h1><a name="troubleshooting">TROUBLESHOOTING</a></h1>
-<p>None,</p>
+<p>None.</p>
 <p>
 </p>
 <hr />

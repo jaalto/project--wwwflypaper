@@ -1,8 +1,8 @@
 NAME
-    wwwflypaper.pl - Generate a real-looking bogus web page
+    wwwflypaper - Generate a real-looking bogus web page
 
 SYNOPSIS
-      wwwflypaper.pl [OPTIONS] [URLROOT]
+      wwwflypaper(.pl) [OPTIONS] [URLROOT]
 
 OPTIONS
     --help|--help-html|--help-man
@@ -13,19 +13,18 @@ OPTIONS
         Print version information.
 
 ARGUMENTS
-    [URLROOT]
+    URLROOT
         In the generated web pages there are links that point back to the
         page. These links (A HREF's in HTML) are by default prefixed with
         "/email". If the trap in the web server is put somewhere else, the
         change must be told to the program in order to generate correct
-        links.
+        links. See exmaples for more information.
 
 DESCRIPTION
-    Generate a random list of real-looking bogus email addresses in the form
-    of an HTML mailing list page. This program is designed to be as fast as
-    possible and self containing. No separate dictionary files are needed.
+    Generate random list of real-looking bogus email addresses in the form
+    of a HTML mailing list page.
 
-    Create dynamically Web pages full of convincingly lifelike - but
+    The page is dynamically made and full of convincingly lifelike - but
     completely bogus - email addresses that spambots can pick up and add to
     their hitlists. The page also contains randomly generated links that the
     bot inevitably follows - links that loop right back to the same page,
@@ -33,7 +32,9 @@ DESCRIPTION
 
     This program can be used to combat the junk email problem by effectively
     poisoning the databases of those gathering programs that regularly scan
-    web pages looking for email addresses to harvest.
+    web pages looking for email addresses to harvest. The program is
+    designed to be as fast as possible and self containing. No separate
+    dictionary files are needed.
 
     The restrictive licensing terms of wpoison(1) inspired to write a free
     alternative -- this program.
@@ -43,7 +44,7 @@ EXAMPLES
     *$WWWROOT/robots.txt* announces a forbidden fruit. The well behaving
     search robots will ignore all URLs that are banned by the robots file.
     But the email harvesting programs will surely want to take a look into
-    the URLs mentioned in one or more *Disallow* lines in the *robots.txt*
+    the URLs mentioned in one or more Disallow lines in the *robots.txt*
     file:
 
         User-agent: *
@@ -78,7 +79,7 @@ EXAMPLES
         wwwflypaper.pl /mailing-list
 
 TROUBLESHOOTING
-    None,
+    None.
 
 ENVIRONMENT
     None used.
@@ -126,4 +127,4 @@ AUTHOR
     can redistribute and/or modify program under the same terms as Perl
     itself or in terms of Gnu General Public licence v2 or later.
 
-Version: $Id: wwwflypaper.txt,v 1.1 2006/06/10 16:00:39 jaalto Exp $
+Version: $Id: wwwflypaper.txt,v 1.2 2006/06/10 20:29:44 jaalto Exp $
