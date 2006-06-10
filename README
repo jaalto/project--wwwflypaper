@@ -29,15 +29,18 @@ Project Description
 
     Requirements
 
-        This is README file of *cygbuild* Sourceforge project. The are no
-        files that would need to be compiled. The project uses intepreted
-        languages. To install and run these utilities, you need:
+        This is README file of *wwwflypaper* Sourceforge project. The
+        are no files that would need to be compiled. The project uses
+        intepreted languages. To install and run these utilities, you
+        need:
 
-        o   Bash            2.04
-        o   Perl            5.004
+        o   Web server with CGI or SSI support
+        o   Perl            5.004 or never
         o   GNU make        any version
 
     Description
+
+        See manual pages in various formats under directory doc/
 
         Sourceforge project's description at
         http://www.sourceforge.net/projects/wwwflypaper (255
@@ -52,8 +55,18 @@ Project Description
 
 Package install instructions
 
+        To install in /usr/local
+
            $ make install
 
+        To install for private use
+
+           $ make DESTDIR=$HOME prefix=/usr/local install
+
+        To make ready to install package. For use e.g. with Linux
+        packaging system:
+
+           $ make DESTDIR=$HOME/tmp exec_prefix=/usr man_prefix=/usr/share install
+           $ (cd $HOME/tmp; tar jcvf package.tar.bz2 usr)
+
 End
-
-

@@ -1,0 +1,129 @@
+NAME
+    wwwflypaper.pl - Generate a real-looking bogus web page
+
+SYNOPSIS
+      wwwflypaper.pl [OPTIONS] [URLROOT]
+
+OPTIONS
+    --help|--help-html|--help-man
+        Print help. The default format is text. Option --help-html displays
+        help in HTML format and --help-man in Unix manual page format.
+
+    --version
+        Print version information.
+
+ARGUMENTS
+    [URLROOT]
+        In the generated web pages there are links that point back to the
+        page. These links (A HREF's in HTML) are by default prefixed with
+        "/email". If the trap in the web server is put somewhere else, the
+        change must be told to the program in order to generate correct
+        links.
+
+DESCRIPTION
+    Generate a random list of real-looking bogus email addresses in the form
+    of an HTML mailing list page. This program is designed to be as fast as
+    possible and self containing. No separate dictionary files are needed.
+
+    Create dynamically Web pages full of convincingly lifelike - but
+    completely bogus - email addresses that spambots can pick up and add to
+    their hitlists. The page also contains randomly generated links that the
+    bot inevitably follows - links that loop right back to the same page,
+    now re-armed with a fresh set of random fake email addresses.
+
+    This program can be used to combat the junk email problem by effectively
+    poisoning the databases of those gathering programs that regularly scan
+    web pages looking for email addresses to harvest.
+
+    The restrictive licensing terms of wpoison(1) inspired to write a free
+    alternative -- this program.
+
+EXAMPLES
+    Let's suppose that local web server's robots file is located at
+    *$WWWROOT/robots.txt* announces a forbidden fruit. The well behaving
+    search robots will ignore all URLs that are banned by the robots file.
+    But the email harvesting programs will surely want to take a look into
+    the URLs mentioned in one or more *Disallow* lines in the *robots.txt*
+    file:
+
+        User-agent: *
+        Disallow: /email
+
+    The idea is that system administrator will set up a trap, where every
+    access to pages under disallowed URLs lead to calls to this program.
+    Here is an example setup for Apache web server.
+
+        <Location /email>
+            <IfModule mod_rewrite.c>
+                RewriteEngine  On
+                RewriteRule    ^  /cgi-bin/wwwflypaper.pl
+            </IfModule>
+
+            AddType cgi-script html
+            options +ExecCGI -Indexes
+        </Location>
+
+    Place the program under *$WWWCGIBIN* directory (e.g. "
+    /usr/lib/cgi-bin/" if that's the Web server's CGI root) and the fly
+    paper trap is ready. Notice that the caret(^) matches every page
+    referred under "/email" location and redirects it to the program. Verify
+    the effect by accessing the page with browser:
+
+       http://your.example.com/email
+
+    The default A HEREF links are set to */email*, but this needs to be
+    changed from command line if another URL location in the web server is
+    used. Like if the trap were in:
+
+        wwwflypaper.pl /mailing-list
+
+TROUBLESHOOTING
+    None,
+
+ENVIRONMENT
+    None used.
+
+FILES
+    None used.
+
+SEE ALSO
+    wpoison(1)
+
+    The wpoison <http://www.monkeys.com/wpoison> does not comply with Debian
+    Free Software Guidelines. See
+    <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=122929> and discussion
+    at <http://lists.debian.org/debian-legal/2001/12/msg00388.html>
+    <http://lists.debian.org/debian-legal/2001/12/msg00396.html>
+    <http://lists.debian.org/debian-legal/2001/12/msg00410.html>
+
+STANDARDS
+    The output is HTML 4.01 Transitional valid. See
+    <http://www.w3.org/TR/html401/sgml/loosedtd.html>. Web servers and
+    robots.txt standard is at <http://www.robotstxt.org>.
+
+BUGS
+    The programs is designed as fast as possible and to be completely self
+    standing. There are no plans to support external lookup dictionaries or
+    other external configurations.
+
+AVAILABILITY
+    <URL Where to get the program>
+
+SCRIPT CATEGORIES
+    CPAN/Administrative
+
+PREREQUISITES
+    No Perl CPAN modules are used.
+
+COREQUISITES
+    Only modules from standard Perl are used.
+
+OSNAMES
+    "any"
+
+AUTHOR
+    Copyright (C) 2005-2007 Jari Aalto. This program is free software; you
+    can redistribute and/or modify program under the same terms as Perl
+    itself or in terms of Gnu General Public licence v2 or later.
+
+Version: $Id: wwwflypaper.txt,v 1.1 2006/06/10 16:00:39 jaalto Exp $

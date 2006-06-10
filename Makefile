@@ -6,18 +6,31 @@ endif
 
 DESTDIR		=
 prefix		= /usr
-exec_prefix	= $(prefix)
-man_prefix	= $(prefix)/share
+exec_prefix	= $(prefix)/local
+man_prefix	= $(prefix)/local
 
 PACKAGE		= wwwflypaper
+PL		= $(PACKAGE).pl
+DOCS		= doc/txt doc/html doc/man
+SRCS		= bin/$(PL)
+MANS		= $(SRCS:.pl=.1)
+OBJS		= $(SRCS) Makefile README ChangeLog
+
 INSTALL		= /usr/bin/install
 INSTALL_BIN	= $(INSTALL) -m 755
 INSTALL_SUID    = $(INSTALL) -m 4755
 INSTALL_DATA	= $(INSTALL) -m 644
 
 INSTALL_OBJS_BIN   = $(PACKAGE)
-INSTALL_OBJS_MAN1  = *.1 *.1x
+INSTALL_OBJS_MAN1  = doc/man/*.1
 INSTALL_OBJS_SHARE =
+
+# Tar exclude patterns
+TAREX = \
+  --exclude RCS  \
+  --exclude CVS  \
+  --exclude .svn \
+  --exclude .bzr
 
 MAKEFILE	= Makefile
 MANDIR1		= $(DESTDIR)$(man_prefix)/man/man1
@@ -28,6 +41,7 @@ SBINDIR		= $(DESTDIR)$(exec_prefix)/sbin
 ETCDIR		= $(DESTDIR)$/etc/$(PACKAGE)
 SHAREDIR	= $(DESTDIR)$(prefix)/share/$(PACKAGE)
 LIBDIR		= $(DESTDIR)$(prefix)/lib/$(PACKAGE)
+DOCDIR		= $(DESTDIR)$(prefix)/share/doc/$(PACKAGE)
 
 DEBUG		= -g
 CC		= gcc
@@ -37,19 +51,38 @@ OBJS		= $(PACKAGE).c
 
 .PHONY: clean distclean install install-man install-bin
 
+.SUFFIXES:
+.SUFFIXES: .pl .1
+
+.pl.1:
+	perl $< --Help-man > doc/man/$(*F).1
+	perl $< --Help-html > doc/html/$(*F).html
+	perl $< --help > doc/txt/$(*F).txt
+	-rm  -f *[~#] *.tmp
+
 all:
 	@echo Nothing to compile. See "make help"
-
-all-compile: $(PACKAGE)
-
-$(PACKAGE): $(OBJS)
-	$(CC) -o $@ $<
 
 # Rule: help - Print list of all make targets
 help:
 	@egrep -ie '# +Rule:' $(MAKEFILE) \
 	    | sed -e 's/.*Rule://' | sort;
 
+# Rule: check - Check that program does not have compilation errors
+release-check:
+	perl -cw $(SRCS)
+
+doc/man/$(PACKAGE).1: $(SRCS)
+	make docs
+
+$(DOCS):
+	$(INSTALL_BIN) -d $@
+
+# Rule: docs - Generate or update documentation (force)
+docs: $(DOCS) $(MANS)
+
+# Rule: doc - Generate or update documentation (if needed)
+doc: $(DOCS) doc/man/$(PACKAGE).1
 
 # Rule: clean - Remove temporary files
 clean:
@@ -71,7 +104,12 @@ install-man:
 	$(INSTALL_BIN) -d $(MANDIR1)
 	$(INSTALL_DATA) $(INSTALL_OBJS_MAN1) $(MANDIR1)
 
+# Rule: install-doc - Install to DOCDIR1
+install-doc:
+	$(INSTALL_BIN) -d $(DOCDIR)
+	(cd doc && tar $(TAREX) -cf - . | (cd  $(DOCDIR) && tar -xf -))
+
 # Rule: install - Run all install targets
-install: $(PACKAGE) install-bin install-man
+install: doc install-bin install-man
 
 # End of file

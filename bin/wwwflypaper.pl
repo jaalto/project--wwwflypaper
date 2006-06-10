@@ -2,7 +2,7 @@
 #
 # wwwflypaper.pl -- Generate a real-looking bogus web page
 #
-#       Copyright (C) 2005 Jari Aalto
+#       Copyright (C) 2005-2007 Jari Aalto
 #       Created:      2005-09
 #       Keywords:     Perl, HTML, fake web page
 #
@@ -19,16 +19,16 @@
 #
 #   Introduction
 #
-#       Please start this perl script with option
+#       Please start this program with option
 #
 #           --help      to get the help page
 #
 #   Profiling results
 #
-#       Here are Devel::Dprof profiling results ffrom 500Mhz/60G/ATA66/ext2
+#       Here are Devel::Dprof profiling results from 500Mhz/60G/ATA66/ext2
 #       Time in seconds is User time.
 #
-#           perl -d:DProf ./t2html.pl page.txt > /dev/null
+#           perl -d:DProf ./wwwflypaper.pl > /dev/null
 #           dprofpp
 #
 #       Total Elapsed Time = 0.063201 Seconds
@@ -56,11 +56,10 @@ use strict;
 use autouse 'Pod::Text' => qw( pod2text );
 use autouse 'Pod::Html' => qw( pod2html );
 
-
 #  Do not modify these values.
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.1 2006/06/10 08:07:08 jaalto Exp $'; #font '
-my $VERSION   = (split ' ', $FILE_ID)[2];   
+my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.2 2006/06/10 15:59:20 jaalto Exp $'; #font '
+my $VERSION   = (split ' ', $FILE_ID)[2];
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -75,8 +74,8 @@ my @titles = qw
 (
     academic
     blue
-    center 
-    chess 
+    center
+    chess
     corporate
     devel
     education
@@ -84,10 +83,10 @@ my @titles = qw
     game
     health
     master
-    radiology 
+    radiology
     research
     team
-    top    
+    top
 );
 
 #  Additional Domain names to make the address "look real"
@@ -116,7 +115,7 @@ my @dname = qw
 #  See http://www.iana.org/gtld/gtld.htm
 
 my @tld = qw
-( 
+(
     biz
     com
     coop
@@ -137,7 +136,7 @@ my @tld = qw
 # GOOGLE: country codes ISO 3166 site:iso.org
 
 my @countries = qw
-( 
+(
     af
     ax
     al
@@ -381,837 +380,838 @@ my @countries = qw
 );
 
 #  Frequently Occurring First Names and Surnames From the 1990 Census
+#  Most frequent appearing first.
 #  See http://www.census.gov/genealogy/names/
 
 my @fname = qw
 (
-    james          
-    john           
-    robert         
-    michael        
-    william        
-    david          
-    richard        
-    charles        
-    joseph         
-    thomas         
-    christopher    
-    daniel         
-    paul           
-    mark           
-    donald         
-    george         
-    kenneth        
-    steven         
-    edward         
-    brian          
-    ronald         
-    anthony        
-    kevin          
-    jason          
-    matthew        
-    gary           
-    timothy        
-    jose           
-    larry          
-    jeffrey        
-    frank          
-    scott          
-    eric           
-    stephen        
-    andrew         
-    raymond        
-    gregory        
-    joshua         
-    jerry          
-    dennis         
-    walter         
-    patrick        
-    peter          
-    harold         
-    douglas        
-    henry          
-    carl           
-    arthur         
-    ryan           
-    roger          
-    joe            
-    juan           
-    jack           
-    albert         
-    jonathan       
-    justin         
-    terry          
-    gerald         
-    keith          
-    samuel         
-    willie         
-    ralph          
-    lawrence       
-    nicholas       
-    roy            
-    benjamin       
-    bruce          
-    brandon        
-    adam           
-    harry          
-    fred           
-    wayne          
-    billy          
-    steve          
-    louis          
-    jeremy         
-    aaron          
-    randy          
-    howard         
-    eugene         
-    carlos         
-    russell        
-    bobby          
-    victor         
-    martin         
-    ernest         
-    phillip        
-    todd           
-    jesse          
-    craig          
-    alan           
-    shawn          
-    clarence       
-    sean           
-    philip         
-    chris          
-    johnny         
-    earl           
-    jimmy          
-    antonio        
-    danny          
-    bryan          
-    tony           
-    luis           
-    mike           
-    stanley        
-    leonard        
-    nathan         
-    dale           
-    manuel         
-    rodney         
-    curtis         
-    norman         
-    allen          
-    marvin         
-    vincent        
-    glenn          
-    jeffery        
-    travis         
-    jeff           
-    chad           
-    jacob          
-    lee            
-    melvin         
-    alfred         
-    kyle           
-    francis        
-    bradley        
-    jesus          
-    herbert        
-    frederick      
-    ray            
-    joel           
-    edwin          
-    don            
-    eddie          
-    ricky          
-    troy           
-    randall        
-    barry          
-    alexander      
-    bernard        
-    mario          
-    leroy          
-    francisco      
-    marcus         
-    micheal        
-    theodore       
-    clifford       
-    miguel         
-    oscar          
-    jay            
-    jim            
-    tom            
-    calvin         
-    alex           
-    jon            
-    ronnie         
-    bill           
-    lloyd          
-    tommy          
-    leon           
-    derek          
-    warren         
-    darrell        
-    jerome         
-    floyd          
-    leo            
-    alvin          
-    tim            
-    wesley         
-    gordon         
-    dean           
-    greg           
-    jorge          
-    dustin         
-    pedro          
-    derrick        
-    dan            
-    lewis          
-    zachary        
-    corey          
-    herman         
-    maurice        
-    vernon         
-    roberto        
-    clyde          
-    glen           
-    hector         
-    shane          
-    ricardo        
-    sam            
-    rick           
-    lester         
-    brent          
-    ramon          
-    charlie        
-    tyler          
-    gilbert        
-    gene           
-    marc           
-    reginald       
-    ruben          
-    brett          
-    angel          
-    nathaniel      
-    rafael         
-    leslie         
-    edgar          
-    milton         
-    raul           
-    ben            
-    chester        
-    cecil          
-    duane          
-    franklin       
-    andre          
-    elmer          
-    brad           
-    gabriel        
-    ron            
-    mitchell       
-    roland         
-    arnold         
-    harvey         
-    jared          
-    adrian         
-    karl           
-    cory           
-    claude         
-    erik           
-    darryl         
-    jamie          
-    neil           
-    jessie         
-    christian      
-    javier         
-    fernando       
-    clinton        
-    ted            
-    mathew         
-    tyrone         
-    darren         
-    lonnie         
-    lance          
-    cody           
-    julio          
-    kelly          
-    kurt           
-    allan          
-    nelson         
-    guy            
-    clayton        
-    hugh           
-    max            
-    dwayne         
-    dwight         
-    armando        
-    felix          
-    jimmie         
-    everett        
-    jordan         
-    ian            
-    wallace        
-    ken            
-    bob            
-    jaime          
-    casey          
-    alfredo        
-    alberto        
-    dave           
-    ivan           
-    johnnie        
-    sidney         
-    byron          
-    julian         
-    isaac          
-    morris         
-    clifton        
-    willard        
-    daryl          
-    ross           
-    virgil         
-    andy           
-    marshall       
-    salvador       
-    perry          
-    kirk           
-    sergio         
-    marion         
-    tracy          
-    seth           
-    kent           
-    terrance       
-    rene           
-    eduardo        
-    terrence       
-    enrique        
-    freddie        
-    wade           
-    austin         
-    stuart         
-    fredrick       
-    arturo         
-    alejandro      
-    jackie         
-    joey           
-    nick           
-    luther         
-    wendell        
-    jeremiah       
-    evan           
-    julius         
-    dana           
-    donnie         
-    otis           
-    shannon        
-    trevor         
-    oliver         
-    luke           
-    homer          
-    gerard         
-    doug           
-    kenny          
-    hubert         
-    angelo         
-    shaun          
-    lyle           
-    matt           
-    lynn           
-    alfonso        
-    orlando        
-    rex            
-    carlton        
-    ernesto        
-    cameron        
-    neal           
-    pablo          
-    lorenzo        
-    omar           
-    wilbur         
-    blake          
-    grant          
-    horace         
-    roderick       
-    kerry          
-    abraham        
-    willis         
-    rickey        
-    jean           
-    ira            
-    andres         
-    cesar          
-    johnathan      
-    malcolm        
-    rudolph        
-    damon          
-    kelvin         
-    rudy           
-    preston        
-    alton          
-    archie         
-    marco          
-    pete           
-    randolph       
-    garry          
-    geoffrey       
-    jonathon       
-    felipe         
-    bennie         
-    gerardo        
-    ed             
-    dominic        
-    robin          
-    loren          
-    delbert        
-    colin          
-    guillermo      
-    earnest        
-    lucas          
-    benny          
-    noel           
-    spencer        
-    rodolfo        
-    myron          
-    edmund         
-    garrett        
-    salvatore      
-    cedric         
-    lowell         
-    gregg          
-    sherman        
-    wilson         
-    devin          
-    sylvester      
-    kim            
-    roosevelt      
-    israel         
-    jermaine       
-    forrest        
-    wilbert        
-    leland         
-    simon          
-    guadalupe      
-    clark          
-    irving         
-    carroll        
-    bryant         
-    owen           
-    rufus          
-    woodrow        
-    sammy          
-    kristopher     
-    mack           
-    levi           
-    marcos         
-    gustavo        
-    jake           
-    lionel         
-    marty          
-    taylor         
-    ellis          
-    dallas         
-    gilberto       
-    clint          
-    nicolas        
-    laurence       
-    ismael         
-    orville        
-    drew           
-    jody           
-    ervin          
-    dewey          
-    al             
-    wilfred        
-    josh           
+    james
+    john
+    robert
+    michael
+    william
+    david
+    richard
+    charles
+    joseph
+    thomas
+    christopher
+    daniel
+    paul
+    mark
+    donald
+    george
+    kenneth
+    steven
+    edward
+    brian
+    ronald
+    anthony
+    kevin
+    jason
+    matthew
+    gary
+    timothy
+    jose
+    larry
+    jeffrey
+    frank
+    scott
+    eric
+    stephen
+    andrew
+    raymond
+    gregory
+    joshua
+    jerry
+    dennis
+    walter
+    patrick
+    peter
+    harold
+    douglas
+    henry
+    carl
+    arthur
+    ryan
+    roger
+    joe
+    juan
+    jack
+    albert
+    jonathan
+    justin
+    terry
+    gerald
+    keith
+    samuel
+    willie
+    ralph
+    lawrence
+    nicholas
+    roy
+    benjamin
+    bruce
+    brandon
+    adam
+    harry
+    fred
+    wayne
+    billy
+    steve
+    louis
+    jeremy
+    aaron
+    randy
+    howard
+    eugene
+    carlos
+    russell
+    bobby
+    victor
+    martin
+    ernest
+    phillip
+    todd
+    jesse
+    craig
+    alan
+    shawn
+    clarence
+    sean
+    philip
+    chris
+    johnny
+    earl
+    jimmy
+    antonio
+    danny
+    bryan
+    tony
+    luis
+    mike
+    stanley
+    leonard
+    nathan
+    dale
+    manuel
+    rodney
+    curtis
+    norman
+    allen
+    marvin
+    vincent
+    glenn
+    jeffery
+    travis
+    jeff
+    chad
+    jacob
+    lee
+    melvin
+    alfred
+    kyle
+    francis
+    bradley
+    jesus
+    herbert
+    frederick
+    ray
+    joel
+    edwin
+    don
+    eddie
+    ricky
+    troy
+    randall
+    barry
+    alexander
+    bernard
+    mario
+    leroy
+    francisco
+    marcus
+    micheal
+    theodore
+    clifford
+    miguel
+    oscar
+    jay
+    jim
+    tom
+    calvin
+    alex
+    jon
+    ronnie
+    bill
+    lloyd
+    tommy
+    leon
+    derek
+    warren
+    darrell
+    jerome
+    floyd
+    leo
+    alvin
+    tim
+    wesley
+    gordon
+    dean
+    greg
+    jorge
+    dustin
+    pedro
+    derrick
+    dan
+    lewis
+    zachary
+    corey
+    herman
+    maurice
+    vernon
+    roberto
+    clyde
+    glen
+    hector
+    shane
+    ricardo
+    sam
+    rick
+    lester
+    brent
+    ramon
+    charlie
+    tyler
+    gilbert
+    gene
+    marc
+    reginald
+    ruben
+    brett
+    angel
+    nathaniel
+    rafael
+    leslie
+    edgar
+    milton
+    raul
+    ben
+    chester
+    cecil
+    duane
+    franklin
+    andre
+    elmer
+    brad
+    gabriel
+    ron
+    mitchell
+    roland
+    arnold
+    harvey
+    jared
+    adrian
+    karl
+    cory
+    claude
+    erik
+    darryl
+    jamie
+    neil
+    jessie
+    christian
+    javier
+    fernando
+    clinton
+    ted
+    mathew
+    tyrone
+    darren
+    lonnie
+    lance
+    cody
+    julio
+    kelly
+    kurt
+    allan
+    nelson
+    guy
+    clayton
+    hugh
+    max
+    dwayne
+    dwight
+    armando
+    felix
+    jimmie
+    everett
+    jordan
+    ian
+    wallace
+    ken
+    bob
+    jaime
+    casey
+    alfredo
+    alberto
+    dave
+    ivan
+    johnnie
+    sidney
+    byron
+    julian
+    isaac
+    morris
+    clifton
+    willard
+    daryl
+    ross
+    virgil
+    andy
+    marshall
+    salvador
+    perry
+    kirk
+    sergio
+    marion
+    tracy
+    seth
+    kent
+    terrance
+    rene
+    eduardo
+    terrence
+    enrique
+    freddie
+    wade
+    austin
+    stuart
+    fredrick
+    arturo
+    alejandro
+    jackie
+    joey
+    nick
+    luther
+    wendell
+    jeremiah
+    evan
+    julius
+    dana
+    donnie
+    otis
+    shannon
+    trevor
+    oliver
+    luke
+    homer
+    gerard
+    doug
+    kenny
+    hubert
+    angelo
+    shaun
+    lyle
+    matt
+    lynn
+    alfonso
+    orlando
+    rex
+    carlton
+    ernesto
+    cameron
+    neal
+    pablo
+    lorenzo
+    omar
+    wilbur
+    blake
+    grant
+    horace
+    roderick
+    kerry
+    abraham
+    willis
+    rickey
+    jean
+    ira
+    andres
+    cesar
+    johnathan
+    malcolm
+    rudolph
+    damon
+    kelvin
+    rudy
+    preston
+    alton
+    archie
+    marco
+    pete
+    randolph
+    garry
+    geoffrey
+    jonathon
+    felipe
+    bennie
+    gerardo
+    ed
+    dominic
+    robin
+    loren
+    delbert
+    colin
+    guillermo
+    earnest
+    lucas
+    benny
+    noel
+    spencer
+    rodolfo
+    myron
+    edmund
+    garrett
+    salvatore
+    cedric
+    lowell
+    gregg
+    sherman
+    wilson
+    devin
+    sylvester
+    kim
+    roosevelt
+    israel
+    jermaine
+    forrest
+    wilbert
+    leland
+    simon
+    guadalupe
+    clark
+    irving
+    carroll
+    bryant
+    owen
+    rufus
+    woodrow
+    sammy
+    kristopher
+    mack
+    levi
+    marcos
+    gustavo
+    jake
+    lionel
+    marty
+    taylor
+    ellis
+    dallas
+    gilberto
+    clint
+    nicolas
+    laurence
+    ismael
+    orville
+    drew
+    jody
+    ervin
+    dewey
+    al
+    wilfred
+    josh
 
-    mary           
-    patricia       
-    linda          
-    barbara        
-    elizabeth      
-    jennifer       
-    maria          
-    susan          
-    margaret       
-    dorothy        
-    lisa           
-    nancy          
-    karen          
-    betty          
-    helen          
-    sandra         
-    donna          
-    carol          
-    ruth           
-    sharon         
-    michelle       
-    laura          
-    sarah          
-    kimberly       
-    deborah        
-    jessica        
-    shirley        
-    cynthia        
-    angela         
-    melissa        
-    brenda         
-    amy            
-    anna           
-    rebecca        
-    virginia       
-    kathleen       
-    pamela         
-    martha         
-    debra          
-    amanda         
-    stephanie      
-    carolyn        
-    christine      
-    marie          
-    janet          
-    catherine      
-    frances        
-    ann            
-    joyce          
-    diane          
-    alice          
-    julie          
-    heather        
-    teresa         
-    doris          
-    gloria         
-    evelyn         
-    jean           
-    cheryl         
-    mildred        
-    katherine      
-    joan           
-    ashley         
-    judith         
-    rose           
-    janice         
-    kelly          
-    nicole         
-    judy           
-    christina      
-    kathy          
-    theresa        
-    beverly        
-    denise         
-    tammy          
-    irene          
-    jane           
-    lori           
-    rachel         
-    marilyn        
-    andrea         
-    kathryn        
-    louise         
-    sara           
-    anne           
-    jacqueline     
-    wanda          
-    bonnie         
-    julia          
-    ruby           
-    lois           
-    tina           
-    phyllis        
-    norma          
-    paula          
-    diana          
-    annie          
-    lillian        
-    emily          
-    robin          
-    peggy          
-    crystal        
-    gladys         
-    rita           
-    dawn           
-    connie         
-    florence       
-    tracy          
-    edna           
-    tiffany        
-    carmen         
-    rosa           
-    cindy          
-    grace          
-    wendy          
-    victoria       
-    edith          
-    kim            
-    sherry         
-    sylvia         
-    josephine      
-    thelma         
-    shannon        
-    sheila         
-    ethel          
-    ellen          
-    elaine         
-    marjorie       
-    carrie         
-    charlotte      
-    monica         
-    esther         
-    pauline        
-    emma           
-    juanita        
-    anita          
-    rhonda         
-    hazel          
-    amber          
-    eva            
-    debbie         
-    april          
-    leslie         
-    clara          
-    lucille        
-    jamie          
-    joanne         
-    eleanor        
-    valerie        
-    danielle       
-    megan          
-    alicia         
-    suzanne        
-    michele        
-    gail           
-    bertha         
-    darlene        
-    veronica       
-    jill           
-    erin           
-    geraldine      
-    lauren         
-    cathy          
-    joann          
-    lorraine       
-    lynn           
-    sally          
-    regina         
-    erica          
-    beatrice       
-    dolores        
-    bernice        
-    audrey         
-    yvonne         
-    annette        
-    june           
-    samantha       
-    marion         
-    dana           
-    stacy          
-    ana            
-    renee          
-    ida            
-    vivian         
-    roberta        
-    holly          
-    brittany       
-    melanie        
-    loretta        
-    yolanda        
-    jeanette       
-    laurie         
-    katie          
-    kristen        
-    vanessa        
-    alma           
-    sue            
-    elsie          
-    beth           
-    jeanne         
-    vicki          
-    carla          
-    tara           
-    rosemary       
-    eileen         
-    terri          
-    gertrude       
-    lucy           
-    tonya          
-    ella           
-    stacey         
-    wilma          
-    gina           
-    kristin        
-    jessie         
-    natalie        
-    agnes          
-    vera           
-    willie         
-    charlene       
-    bessie         
-    delores        
-    melinda        
-    pearl          
-    arlene         
-    maureen        
-    colleen        
-    allison        
-    tamara         
-    joy            
-    georgia        
-    constance      
-    lillie         
-    claudia        
-    jackie         
-    marcia         
-    tanya          
-    nellie         
-    minnie         
-    marlene        
-    heidi          
-    glenda         
-    lydia          
-    viola          
-    courtney       
-    marian         
-    stella         
-    caroline       
-    dora           
-    jo             
-    vickie         
-    mattie         
-    terry          
-    maxine         
-    irma           
-    mabel          
-    marsha         
-    myrtle         
-    lena           
-    christy        
-    deanna         
-    patsy          
-    hilda          
-    gwendolyn      
-    jennie         
-    nora           
-    margie         
-    nina           
-    cassandra      
-    leah           
-    penny          
-    kay            
-    priscilla      
-    naomi          
-    carole         
-    brandy         
-    olga           
-    billie         
-    dianne         
-    tracey         
-    leona          
-    jenny          
-    felicia        
-    sonia          
-    miriam         
-    velma          
-    becky          
-    bobbie         
-    violet         
-    kristina       
-    toni           
-    misty          
-    mae            
-    shelly         
-    daisy          
-    ramona         
-    sherri         
-    erika          
-    katrina        
-    claire         
-    lindsey        
-    lindsay        
-    geneva         
-    guadalupe      
-    belinda        
-    margarita      
-    sheryl         
-    cora           
-    faye           
-    ada            
-    natasha        
-    sabrina        
-    isabel         
-    marguerite     
-    hattie         
-    harriet        
-    molly          
-    cecilia        
-    kristi         
-    brandi         
-    blanche        
-    sandy          
-    rosie          
-    joanna         
-    iris           
-    eunice         
-    angie          
-    inez           
-    lynda          
-    madeline       
-    amelia         
-    alberta        
-    genevieve      
-    monique        
-    jodi           
-    janie          
-    maggie         
-    kayla          
-    sonya          
-    jan            
-    lee            
-    kristine       
-    candace        
-    fannie         
-    maryann        
-    opal           
-    alison         
-    yvette         
-    melody         
-    luz            
-    susie          
-    olivia         
-    flora          
-    shelley        
-    kristy         
-    mamie          
-    lula           
-    lola           
-    verna          
-    beulah         
-    antoinette     
-    candice        
-    juana          
-    jeannette      
-    pam            
-    kelli          
-    hannah         
-    whitney        
-    bridget        
-    karla          
-    celia          
-    latoya         
-    patty          
-    shelia         
-    gayle          
-    della          
-    vicky          
-    lynne          
-    sheri          
-    marianne       
-    kara           
-    jacquelyn      
-    erma           
-    blanca         
-    myra           
-    leticia        
-    pat            
-    krista         
-    roxanne        
-    angelica       
+    mary
+    patricia
+    linda
+    barbara
+    elizabeth
+    jennifer
+    maria
+    susan
+    margaret
+    dorothy
+    lisa
+    nancy
+    karen
+    betty
+    helen
+    sandra
+    donna
+    carol
+    ruth
+    sharon
+    michelle
+    laura
+    sarah
+    kimberly
+    deborah
+    jessica
+    shirley
+    cynthia
+    angela
+    melissa
+    brenda
+    amy
+    anna
+    rebecca
+    virginia
+    kathleen
+    pamela
+    martha
+    debra
+    amanda
+    stephanie
+    carolyn
+    christine
+    marie
+    janet
+    catherine
+    frances
+    ann
+    joyce
+    diane
+    alice
+    julie
+    heather
+    teresa
+    doris
+    gloria
+    evelyn
+    jean
+    cheryl
+    mildred
+    katherine
+    joan
+    ashley
+    judith
+    rose
+    janice
+    kelly
+    nicole
+    judy
+    christina
+    kathy
+    theresa
+    beverly
+    denise
+    tammy
+    irene
+    jane
+    lori
+    rachel
+    marilyn
+    andrea
+    kathryn
+    louise
+    sara
+    anne
+    jacqueline
+    wanda
+    bonnie
+    julia
+    ruby
+    lois
+    tina
+    phyllis
+    norma
+    paula
+    diana
+    annie
+    lillian
+    emily
+    robin
+    peggy
+    crystal
+    gladys
+    rita
+    dawn
+    connie
+    florence
+    tracy
+    edna
+    tiffany
+    carmen
+    rosa
+    cindy
+    grace
+    wendy
+    victoria
+    edith
+    kim
+    sherry
+    sylvia
+    josephine
+    thelma
+    shannon
+    sheila
+    ethel
+    ellen
+    elaine
+    marjorie
+    carrie
+    charlotte
+    monica
+    esther
+    pauline
+    emma
+    juanita
+    anita
+    rhonda
+    hazel
+    amber
+    eva
+    debbie
+    april
+    leslie
+    clara
+    lucille
+    jamie
+    joanne
+    eleanor
+    valerie
+    danielle
+    megan
+    alicia
+    suzanne
+    michele
+    gail
+    bertha
+    darlene
+    veronica
+    jill
+    erin
+    geraldine
+    lauren
+    cathy
+    joann
+    lorraine
+    lynn
+    sally
+    regina
+    erica
+    beatrice
+    dolores
+    bernice
+    audrey
+    yvonne
+    annette
+    june
+    samantha
+    marion
+    dana
+    stacy
+    ana
+    renee
+    ida
+    vivian
+    roberta
+    holly
+    brittany
+    melanie
+    loretta
+    yolanda
+    jeanette
+    laurie
+    katie
+    kristen
+    vanessa
+    alma
+    sue
+    elsie
+    beth
+    jeanne
+    vicki
+    carla
+    tara
+    rosemary
+    eileen
+    terri
+    gertrude
+    lucy
+    tonya
+    ella
+    stacey
+    wilma
+    gina
+    kristin
+    jessie
+    natalie
+    agnes
+    vera
+    willie
+    charlene
+    bessie
+    delores
+    melinda
+    pearl
+    arlene
+    maureen
+    colleen
+    allison
+    tamara
+    joy
+    georgia
+    constance
+    lillie
+    claudia
+    jackie
+    marcia
+    tanya
+    nellie
+    minnie
+    marlene
+    heidi
+    glenda
+    lydia
+    viola
+    courtney
+    marian
+    stella
+    caroline
+    dora
+    jo
+    vickie
+    mattie
+    terry
+    maxine
+    irma
+    mabel
+    marsha
+    myrtle
+    lena
+    christy
+    deanna
+    patsy
+    hilda
+    gwendolyn
+    jennie
+    nora
+    margie
+    nina
+    cassandra
+    leah
+    penny
+    kay
+    priscilla
+    naomi
+    carole
+    brandy
+    olga
+    billie
+    dianne
+    tracey
+    leona
+    jenny
+    felicia
+    sonia
+    miriam
+    velma
+    becky
+    bobbie
+    violet
+    kristina
+    toni
+    misty
+    mae
+    shelly
+    daisy
+    ramona
+    sherri
+    erika
+    katrina
+    claire
+    lindsey
+    lindsay
+    geneva
+    guadalupe
+    belinda
+    margarita
+    sheryl
+    cora
+    faye
+    ada
+    natasha
+    sabrina
+    isabel
+    marguerite
+    hattie
+    harriet
+    molly
+    cecilia
+    kristi
+    brandi
+    blanche
+    sandy
+    rosie
+    joanna
+    iris
+    eunice
+    angie
+    inez
+    lynda
+    madeline
+    amelia
+    alberta
+    genevieve
+    monique
+    jodi
+    janie
+    maggie
+    kayla
+    sonya
+    jan
+    lee
+    kristine
+    candace
+    fannie
+    maryann
+    opal
+    alison
+    yvette
+    melody
+    luz
+    susie
+    olivia
+    flora
+    shelley
+    kristy
+    mamie
+    lula
+    lola
+    verna
+    beulah
+    antoinette
+    candice
+    juana
+    jeannette
+    pam
+    kelli
+    hannah
+    whitney
+    bridget
+    karla
+    celia
+    latoya
+    patty
+    shelia
+    gayle
+    della
+    vicky
+    lynne
+    sheri
+    marianne
+    kara
+    jacquelyn
+    erma
+    blanca
+    myra
+    leticia
+    pat
+    krista
+    roxanne
+    angelica
 
 );
 
@@ -2126,38 +2126,43 @@ wwwflypaper.pl -  Generate a real-looking bogus web page
 
 =head1 SYNOPSIS
 
-  wwwflypaper.pl [URLROOT]
+  wwwflypaper.pl [OPTIONS] [URLROOT]
 
 =head1 OPTIONS
 
 =over 4
 
-=item B<--help [-man|-html]>
+=item B<--help|--help-html|--help-man>
 
-Print help. The default format is text. With B<--help -man> display
-help in Unix man page format etc.
+Print help. The default format is text. Option B<--help-html> displays
+help in HTML format and --help-man in Unix manual page format.
 
 =item B<--version>
 
 Print version information.
 
-=item B<[URLROOT]>
+=back
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item B<URLROOT>
 
 In the generated web pages there are links that point back to the
 page. These links (A HREF's in HTML) are by default prefixed with
 C</email>. If the trap in the web server is put somewhere else, the
 change must be told to the program in order to generate correct links.
+See exmaples for more information.
 
 =back
 
 =head1 DESCRIPTION
 
-Generate a random list of real-looking bogus email addresses in the
-form of an HTML mailing list page. This program is designed to be as
-fast as possible and self containing. No separate dictionary files are
-needed.
+Generate random list of real-looking bogus email addresses in the
+form of a HTML mailing list page.
 
-Create dynamically Web pages full of convincingly lifelike - but
+The page is dynamically made and full of convincingly lifelike - but
 completely bogus - email addresses that spambots can pick up and add
 to their hitlists. The page also contains randomly generated links
 that the bot inevitably follows - links that loop right back to the
@@ -2166,22 +2171,28 @@ addresses.
 
 This program can be used to combat the junk email problem by
 effectively poisoning the databases of those gathering programs that
-regularly scan web pages looking for email addresses to harvest.
+regularly scan web pages looking for email addresses to harvest. The
+program is designed to be as fast as possible and self containing. No
+separate dictionary files are needed.
+
+The restrictive licensing terms of wpoison(1) inspired to
+write a free alternative -- this program.
 
 =head1 EXAMPLES
 
-Supposing the I<$WWWROOT> contains robots file that announces a
-forbidden fruit. The well behaving search robots will ignore all URLs
-that start are banned by the robots file, but the bad harvesting
-programs will surely want to take a look into the URLs mentioned in
-one or more I<Disallow> lines:
+Let's suppose that local web server's robots file is located at
+I<$WWWROOT/robots.txt> announces a forbidden fruit. The well behaving
+search robots will ignore all URLs that are banned by the robots file.
+But the email harvesting programs will surely want to take a look into
+the URLs mentioned in one or more B<Disallow> lines in the
+I<robots.txt> file:
 
     User-agent: *
     Disallow: /email
 
-The idea is to set up a trap, where every access to pages under
-disallowed URLs lead to calls to this program. Here is an example
-setup for Apache web server:
+The idea is that system administrator will set up a trap, where every
+access to pages under disallowed URLs lead to calls to this program.
+Here is an example setup for Apache web server.
 
     <Location /email>
 	<IfModule mod_rewrite.c>
@@ -2193,9 +2204,11 @@ setup for Apache web server:
 	options +ExecCGI -Indexes
     </Location>
 
-Place the program under I<$WWWCGIBIN> directory (e.g. 
-C< /usr/lib/cgi-bin/>) and the fly paper trap is ready. Try it by accessing the
-page with browser:
+Place the program under I<$WWWCGIBIN> directory (e.g. C<
+/usr/lib/cgi-bin/> if that's the Web server's CGI root) and the fly
+paper trap is ready. Notice that the caret(^) matches every page
+referred under C</email> location and redirects it to the program.
+Verify the effect by accessing the page with browser:
 
    http://your.example.com/email
 
@@ -2207,7 +2220,7 @@ server is used. Like if the trap were in:
 
 =head1 TROUBLESHOOTING
 
-None,
+None.
 
 =head1 ENVIRONMENT
 
@@ -2221,7 +2234,7 @@ None used.
 
 wpoison(1)
 
-However the wpoison <http://www.monkeys.com/wpoison>
+The wpoison <http://www.monkeys.com/wpoison>
 does not comply with Debian Free Software Guidelines. See
 <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=122929> and
 discussion at
@@ -2233,7 +2246,7 @@ discussion at
 
 The output is HTML 4.01 Transitional valid. See
 <http://www.w3.org/TR/html401/sgml/loosedtd.html>. Web servers and
-robots.txt standard <http://www.robotstxt.org>.
+robots.txt standard is at <http://www.robotstxt.org>.
 
 =head1 BUGS
 
@@ -2255,7 +2268,7 @@ No Perl CPAN modules are used.
 
 =head1 COREQUISITES
 
-Only strict, autouse modules are used from standard Perl.
+Only modules from standard Perl are used.
 
 =head1 OSNAMES
 
@@ -2263,7 +2276,7 @@ C<any>
 
 =head1 AUTHOR
 
-Copyright (C) 2005 Jari Aalto.
+Copyright (C) 2005-2007 Jari Aalto.
 This program is free software; you can redistribute and/or modify program
 under the same terms as Perl itself or in terms of Gnu General Public
 licence v2 or later.
@@ -2283,7 +2296,7 @@ sub Help (;$ $)
         eval "use Pod::Man";
         $@  and  die "$0: Cannot generate Man: $@";
 
-        my %options; 
+        my %options;
         $options{center} = "Generate fake web page ($VERSION)";
 
         my $parser = Pod::Man->new(%options);
@@ -2302,7 +2315,7 @@ sub Help (;$ $)
 #
 #   DESCRIPTION
 #
-#	Pick random item from array. The item's length must be over 4 
+#	Pick random item from array. The item's length must be over 4
 #	characters.
 #
 #   INPUT PARAMETERS
@@ -2325,7 +2338,7 @@ sub GetWord ($)
 
     ! @$aref  and  die "$id: ARRAY is empty";
 
-    while ( length $word < 4 ) 
+    while ( length $word < 4 )
     {
 	$word = $$aref[ int rand @$aref ];
     }
@@ -2364,7 +2377,8 @@ sub GetLetter ()
 #
 #   INPUT PARAMETERS
 #
-#	@		Array of words that are used for the visible URL link names.
+#	@		Array of words that are used for the visible URL
+#                       link names.
 #	$ROOTDIR	[global] The web server's location prefix for all URLs.
 #
 #   RETURN VALUES
@@ -2379,7 +2393,7 @@ sub AddLinks ($)
 
     my ($words) = @_;
 
-    for my $i ( 0 .. 15 ) 
+    for my $i ( 0 .. 15 )
     {
 	my $text = GetWord $words;
 	my $link = "$ROOTDIR/$text.html";
@@ -2413,7 +2427,9 @@ sub Main ()
     #  Don't use Perl module Getop::Long to make this program as
     #  fast as possible for busy Web servers. Read args "old fashioned".
 
-    grep /^(--help|-h)/i, @ARGV     and Help();
+    grep /^(--help|-h)$/i,   @ARGV  and Help();
+    grep /^(--help-html)$/i, @ARGV  and Help -html;
+    grep /^(--help-man)$/i,  @ARGV  and Help -man;
     grep /^(--version|-v)/i, @ARGV  and print("$VERSION\n"), exit;
 
     my($dir) = @ARGV;
@@ -2430,7 +2446,7 @@ sub Main ()
 
     my $numadds  = 100 + int rand 100;
 
-    # start the HTML output. 
+    # start the HTML output.
 
     print "Content-type: text/html; $CHARSET\n\n" . $DOCTYPE;
 
@@ -2451,7 +2467,7 @@ sub Main ()
 	<BODY>
 
 	<H1 ALIGN="CENTER">$listname information</H1>
-	<P>This is for the use of $listname only. 
+	<P>This is for the use of $listname only.
 	</P>
     );
 
@@ -2459,16 +2475,16 @@ sub Main ()
     my $count = 100;
     my @words;
 
-    for my $i (0 .. $count) 
+    for my $i (0 .. $count)
     {
 	my $word = '';
 
-	for my $j ( 0 .. rand(4) + 3 ) 
+	for my $j ( 0 .. rand(4) + 3 )
 	{
 	    $word = $word . $alphaset[rand 25];
 	}
 
-	push @words, $word; 
+	push @words, $word;
     }
 
     chomp @words;
@@ -2478,7 +2494,7 @@ sub Main ()
     my @list;
     my @tlds = (@tld, @countries);
 
-    for my $i ( 0 .. $numadds ) 
+    for my $i ( 0 .. $numadds )
     {
 	my $user    = ucfirst lc GetWord \@words;
 	my $fname   = ucfirst $fname[ int rand @fname ];
@@ -2490,11 +2506,11 @@ sub Main ()
 
 	my $domain  = sprintf "%s.%s.%s"
 		      , $dname
-		      , GetWord(\@words) . GetLetter() 
+		      , GetWord(\@words) . GetLetter()
 		      , $tld
 		      ;
 
-	my $email   = lc sprintf "%s.%s@%s", $fname, $sname, $domain;  
+	my $email   = lc sprintf "%s.%s@%s", $fname, $sname, $domain;
 
 	push @list, qq(<LI>$name <A HREF="mailto:$email">$email</A>\n);
     }
