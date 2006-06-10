@@ -39,6 +39,7 @@ TAR_OPT_NO	= --exclude='.build'	 \
 		  --exclude='RCS'	 \
 		  --exclude='.svn'	 \
 		  --exclude='.bzr'	 \
+		  --exclude='debian'	 \
 		  --exclude='*.tar*'	 \
 		  --exclude='*.gz'
 
