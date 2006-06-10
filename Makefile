@@ -42,6 +42,7 @@ ETCDIR		= $(DESTDIR)$/etc/$(PACKAGE)
 SHAREDIR	= $(DESTDIR)$(prefix)/share/$(PACKAGE)
 LIBDIR		= $(DESTDIR)$(prefix)/lib/$(PACKAGE)
 DOCDIR		= $(DESTDIR)$(prefix)/share/doc/$(PACKAGE)
+WWWCGIDIR	= $(DESTDIR)/usr/lib/cgi-bin
 
 DEBUG		= -g
 CC		= gcc
@@ -69,7 +70,7 @@ help:
 	    | sed -e 's/.*Rule://' | sort;
 
 # Rule: check - Check that program does not have compilation errors
-release-check:
+check:
 	perl -cw $(SRCS)
 
 doc/man/$(PACKAGE).1: $(SRCS)
@@ -97,7 +98,7 @@ install-etc:
 # Rule: install-bin - Install to BINDIR
 install-bin:
 	$(INSTALL_BIN) -d $(BINDIR)
-	$(INSTALL_BIN) -s $(INSTALL_OBJS_BIN) $(BINDIR)
+	$(INSTALL_BIN)    $(INSTALL_OBJS_BIN) $(BINDIR)
 
 # Rule: install-bin - Install to MANDIR1
 install-man:
@@ -108,6 +109,11 @@ install-man:
 install-doc:
 	$(INSTALL_BIN) -d $(DOCDIR)
 	(cd doc && tar $(TAREX) -cf - . | (cd  $(DOCDIR) && tar -xf -))
+
+# Rule: install-www - Install to WWWCGIDIR
+install-www:
+	test -d $(WWWCGIDIR)
+	$(INSTALL_BIN) $(INSTALL_OBJS_BIN) $(WWWCGIDIR)
 
 # Rule: install - Run all install targets
 install: doc install-bin install-man

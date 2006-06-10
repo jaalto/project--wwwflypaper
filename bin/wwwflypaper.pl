@@ -58,7 +58,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify these values.
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.2 2006/06/10 15:59:20 jaalto Exp $'; #font '
+my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.3 2006/06/10 16:18:11 jaalto Exp $'; #font '
 my $VERSION   = (split ' ', $FILE_ID)[2];
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
@@ -2373,6 +2373,35 @@ sub GetLetter ()
 #
 #   DESCRIPTION
 #
+#	Start of the programs
+#
+#   INPUT PARAMETERS
+#
+#	Command line options. See Help() or run program with --help.
+#
+#   RETURN VALUES
+#
+#	HTML web page. The first line contains Content-Type header required by
+#	the Web servers
+#
+# ****************************************************************************
+
+sub Listname ()
+{
+    my $word1    = ucfirst $titles[ int rand @titles ];
+    my $listname = sprintf "%s %s Mailing List"
+	         , ucfirst $word1
+		 #  Make sure we do not pick the same word again.
+	         , ucfirst( (grep !/$word1/, @titles)[ int rand @titles - 1])
+		 ;
+
+    return $listname;
+}
+
+# ****************************************************************************
+#
+#   DESCRIPTION
+#
 #	Generate new URL links that point back to the "trap" (this program)
 #
 #   INPUT PARAMETERS
@@ -2395,8 +2424,9 @@ sub AddLinks ($)
 
     for my $i ( 0 .. 15 )
     {
-	my $text = GetWord $words;
-	my $link = "$ROOTDIR/$text.html";
+	my $page  = GetWord $words;
+	my $text  = Listname();
+	my $link  = "$ROOTDIR/$page.html";
 
 	$link =~ s/[\s\n\r]+//g;
 	print "<DD><A HREF=\"$link\">$text</A>\n";
@@ -2450,12 +2480,7 @@ sub Main ()
 
     print "Content-type: text/html; $CHARSET\n\n" . $DOCTYPE;
 
-    my $word1    = ucfirst $titles[ int rand @titles ];
-    my $listname = sprintf "%s %s Mailing List"
-	         , ucfirst $word1
-		 #  Make sure we do not pick the same word again.
-	         , ucfirst( (grep !/$word1/, @titles)[ int rand @titles - 1])
-		 ;
+    my $listname = Listname();
 
     print qq
     (
