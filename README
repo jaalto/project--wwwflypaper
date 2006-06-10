@@ -1,0 +1,59 @@
+Copyright
+
+        #T2HTML-TITLE Wwwflypaper README
+        #T2HTML-OPTION --as-is
+        #T2HTML-OPTION --css-code-bg
+        #T2HTML-OPTION --css-code-note
+        #T2HTML-OPTION Note:
+
+        Copyright 2005-2007 (C) Jari Aalto
+        All files and documentaiton in this project is released under GPL.
+
+        This program is free software; you can redistribute it and/or
+        modify it under the terms of the GNU General Public License as
+        published by the Free Software Foundation; either version 2 of
+        the License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful, but
+        WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+        General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+        Visit http://www.gnu.org/copyleft/gpl.html
+
+Project Description
+
+    Requirements
+
+        This is README file of *cygbuild* Sourceforge project. The are no
+        files that would need to be compiled. The project uses intepreted
+        languages. To install and run these utilities, you need:
+
+        o   Bash            2.04
+        o   Perl            5.004
+        o   GNU make        any version
+
+    Description
+
+        Sourceforge project's description at
+        http://www.sourceforge.net/projects/wwwflypaper (255
+        characters) reads:
+
+            Web page poison for email harvesters
+
+            Generate a random list of real-looking bogus email
+            addresses in the form of an HTML mailing list page. This
+            program is designed to be as fast as possible and self
+            containing. No separate dictionary files are needed.
+
+Package install instructions
+
+           $ make install
+
+End
+
+

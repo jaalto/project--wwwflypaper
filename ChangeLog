@@ -1,5 +1,7 @@
 2006-06-10  Jari Aalto  <jaalto A T cante>
 
+	* README: Added.
+
 	* bin/wwwflypaper.pl: Added.
 
 	* Makefile: Added.
