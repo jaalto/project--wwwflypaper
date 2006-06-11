@@ -58,15 +58,18 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify these values.
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.4 2006/06/10 20:20:51 jaalto Exp $'; #font '
+my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.5 2006/06/11 10:29:45 jaalto Exp $'; #font '
 my $VERSION   = (split ' ', $FILE_ID)[2];
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
 
-#  This can be changed from command line.
+#  This can be changed from command line or set in /etc/wwwflypaper/config
 
 my $ROOTDIR   = "/email";
+
+#  System wide configuration file
+my $ETCCONF   = "/etc/wwwflypaper/config";
 
 #  Two random words make the "list name"
 
@@ -2228,7 +2231,10 @@ None used.
 
 =head1 FILES
 
-None used.
+If no command line argument for URLROOT, try to read
+C</etc/wwwflypaper/config> file if it exists. It set's the default
+location of URLROOT. This is for system wide program installation on
+the Web server.
 
 =head1 SEE ALSO
 
@@ -2309,6 +2315,75 @@ sub Help (;$ $)
     }
 
     exit 0;
+}
+
+# ****************************************************************************
+#
+#   DESCRIPTION
+#
+#	From Perl FAQ "4.48: How do I shuffle an array randomly?"
+#
+#   INPUT PARAMETERS
+#
+#	\@              Reference to array
+#
+#   RETURN VALUES
+#
+#	$		Reference to array
+#
+# ****************************************************************************
+
+sub ArrayShuffleFisherYates ($)
+{
+    my $deck = shift;  # $deck is a reference to an array
+    my $i = @$deck;
+
+    while (--$i)
+    {
+        my $j = int rand $i + 1;
+        @$deck[$i, $j] = @$deck[$j,$i];
+    }
+
+    $deck;  # return reference
+}
+
+# ****************************************************************************
+#
+#   DESCRIPTION
+#
+#	Read system wide configuration file if readable. Any coments
+#       that start with (#) are ignored. The variable is `urlroot'.
+#
+#   INPUT PARAMETERS
+#
+#	None
+#
+#   RETURN VALUES
+#
+#	$str		String. Location of URLROOT.
+#
+# ****************************************************************************
+
+sub SysRootdir ()
+{
+    #   get a random word of at least 4 characters
+
+    -r $ETCCONF  or return;
+
+    open my $FILE, "< $ETCCONF"  or return;
+
+    local $_;
+    $_ = <$FILE>;
+    close $FILE;
+
+    my $ret = "";
+
+    if ( /^\s* urlroot \s* = \s*(\S+)/x )
+    {
+        $ret = $1;
+    }
+
+    return $ret;
 }
 
 # ****************************************************************************
@@ -2439,6 +2514,51 @@ sub AddLinks ($)
 #
 #   DESCRIPTION
 #
+#	Compose random email address from list of words with TLD.
+#
+#   INPUT PARAMETERS
+#
+#	$               The TLD suffix
+#       @               List of words
+#
+#   RETURN VALUES
+#
+#	$               String. Email address.
+#
+# ****************************************************************************
+
+sub EmailCompose ($@)
+{
+    my $tld  = shift;
+    my @list = @_;
+
+    #  Mix and shake
+    my $ref     = ArrayShuffleFisherYates \@list;
+    my $len     = @$ref - 1;
+
+    # random position of @-sign
+    my $randAT  = int rand $len;
+    $randAT     = 1  if  $randAT == 0  or  $randAT == $len;
+
+    my $email;
+
+    for my $i ( 0 .. $len )
+    {
+        my $glue = ".";
+
+        $glue = "@" if $i == $randAT;
+        $glue = ""  if $i == $len;
+
+        $email .= @$ref[ $i ] . $glue;
+    }
+
+    lc ($email . ".$tld");
+}
+
+# ****************************************************************************
+#
+#   DESCRIPTION
+#
 #	Start of the programs
 #
 #   INPUT PARAMETERS
@@ -2462,11 +2582,19 @@ sub Main ()
     grep /^(--help-man)$/i,  @ARGV  and Help -man;
     grep /^(--version|-v)/i, @ARGV  and print("$VERSION\n"), exit;
 
+    $| = 1;   # $OUTPUT_AUTOFLUSH
+
     my($dir) = @ARGV;
 
-    $ROOTDIR  = $dir       if $dir;
-
-    $| = 1;   # $OUTPUT_AUTOFLUSH
+    if ( $dir )
+    {
+        $ROOTDIR  = $dir;
+    }
+    else
+    {
+        my $root = SysRootdir();
+        $ROOTDIR = $root if $root;
+    }
 
     # seed random number generator
 
@@ -2522,22 +2650,24 @@ sub Main ()
     for my $i ( 0 .. $numadds )
     {
 	my $user    = ucfirst lc GetWord \@words;
+
+        #  Firstname, Surname
 	my $fname   = ucfirst $fname[ int rand @fname ];
 	my $sname   = ucfirst $sname[ int rand @sname ];
+
+        #  Person's name
 	my $name    = "$fname $sname";
 
 	my $dname   = $dname[ int rand @dname ];
 	my $tld     = $tlds[ int rand @tlds ];
 
-	my $domain  = sprintf "%s.%s.%s"
-		      , $dname
-		      , GetWord(\@words) . GetLetter()
-		      , $tld
-		      ;
+        #  Meaningless gibberish
+        my $null    = GetWord(\@words) . GetLetter();
 
-	my $email   = lc sprintf "%s.%s@%s", $fname, $sname, $domain;
+        my $email   = EmailCompose  $tld, $fname, $sname, $dname, $null;
+        my $line    = qq(<LI>$name <A HREF="mailto:$email">$email</A>\n);
 
-	push @list, qq(<LI>$name <A HREF="mailto:$email">$email</A>\n);
+	push @list, $line;
     }
 
     print "\n\n<UL>\n", @list, "</UL> \n\n</BODY> \n</HTML>\n";

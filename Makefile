@@ -21,8 +21,7 @@ INSTALL_BIN	= $(INSTALL) -m 755
 INSTALL_SUID    = $(INSTALL) -m 4755
 INSTALL_DATA	= $(INSTALL) -m 644
 
-INSTALL_OBJS_BIN   = $(PL)
-INSTALL_OBJS_TOBIN = $(PACKAGE)
+INSTALL_OBJS_BIN   = bin/$(PL)
 INSTALL_OBJS_MAN1  = doc/man/*.1
 INSTALL_OBJS_SHARE =
 
@@ -65,6 +64,8 @@ OBJS		= $(PACKAGE).c
 VERSION		= `date '+%Y.%m%d'`
 
 BUILDDIR	= .build
+DEBDIR		= .build/deb
+
 PACKAGEVER	= $(PACKAGE)-$(VERSION)
 RELEASEDIR	= $(BUILDDIR)/$(PACKAGEVER)
 RELEASE_FILE	= $(PACKAGEVER).tar.gz
@@ -82,7 +83,14 @@ SOURCEFORGE_USER	  = $(USER)
 SOURCEFORGE_LOGIN	  = $(SOURCEFORGE_USER)@$(SOURCEFORGE_SHELL)
 SOURCEFORGE_SSH_DIR	  = $(SOURCEFORGE_LOGIN):$(SOURCEFORGE_DIR)
 
-TAR_FILE_WORLD_LS  = `ls -t1 $(BUILDDIR)/*.tar.gz | sort -r | head -1`
+TAR_FILE_WORLD_LS  = `ls -t1 $(BUILDDIR)/*-*.tar.gz | sort -r | head -1`
+
+# 1. Delete path
+# 2. Convert "-" into "_"
+# 3. Convert "tar" into "orig.tar"
+# wwwflypaper-2006.0610.tar.gz => wwwflypaper_2006.0610.orig.tar.gz
+
+TAR_FILE_DEB_ORIG = `ls -t1 $(BUILDDIR)/*-*.tar.gz | sort -r | head -1 | sed -e "s,.*/,, ; s,-,_, ; s,tar,orig.tar," `
 
 .PHONY: clean distclean install install-man install-bin
 
@@ -105,9 +113,9 @@ help:
 
 # Rule: check - Check that program does not have compilation errors
 check:
-	perl -cw $(SRCS)
+	perl -cw $(INSTALL_OBJS_BIN)
 
-doc/man/$(PACKAGE).1: $(SRCS)
+doc/man/$(PACKAGE).1: $(INSTALL_OBJS_BIN)
 	make docs
 
 $(DOCS):
@@ -129,6 +137,20 @@ release:
 	@echo $(RELEASE_FILE_PATH)
 	@tar -ztvf $(RELEASE_FILE_PATH)
 
+# Rule: release-list - [maintenance] List content of release.
+release-list:
+	$(TAR) -ztvf $(TAR_FILE_WORLD_LS)
+
+# Rule: release-deb - [maintenance] Make Debian *.deb release
+release-deb:
+	#  Note that target RELEASE must have been prior running RELEASE-DEB
+	$(INSTALL_BIN) -d $(DEBDIR)
+	rm -rf $(DEBDIR)/*
+	tar -C $(DEBDIR) -zxvf $(TAR_FILE_WORLD_LS)
+	cp $(TAR_FILE_WORLD_LS) $(DEBDIR)/$(TAR_FILE_DEB_ORIG)
+	cp -r debian/ $(DEBDIR)/*/
+	$(MAKE) -C $(DEBDIR)/*/ -f debian/debian.mk deb
+
 # Rule: sf-upload-release - [Maintenence] Sourceforge; Upload documentation
 sf-upload-release:
 	@echo "-- run command --"
@@ -137,13 +159,10 @@ sf-upload-release:
 		$(SOURCEFORGE_UPLOAD_DIR)   \
 		$(RELEASE_LS)
 
-# Rule: release-list - [maintenance] List content of release.
-release-list:
-	$(TAR) -ztvf $(TAR_FILE_WORLD_LS)
-
 # Rule: clean - Remove temporary files
 clean:
-	-rm -f *[#~] *.\#* *.o *.exe core *.stackdump
+	-find . -type f | egrep '[#~]|DEADJOE|\.(o|exe|stackdump)|core) | \
+	xargs -r rm -f
 
 distclean: clean
 
@@ -154,7 +173,12 @@ install-etc:
 # Rule: install-bin - Install to BINDIR
 install-bin:
 	$(INSTALL_BIN) -d $(BINDIR)
-	$(INSTALL_BIN)    $(PL) $(BINDIR)/$(INSTALL_OBJS_TOBIN)
+	$(INSTALL_BIN)    $(INSTALL_OBJS_BIN) $(BINDIR)/$(PACKAGE)
+
+# Rule: install-www - Install to WWWCGIDIR
+install-www:
+	$(INSTALL_BIN) -d $(WWWCGIDIR)
+	$(INSTALL_BIN) $(INSTALL_OBJS_BIN) $(WWWCGIDIR)/$(PACKAGE)
 
 # Rule: install-bin - Install to MANDIR1
 install-man:
@@ -165,11 +189,6 @@ install-man:
 install-doc:
 	$(INSTALL_BIN) -d $(DOCDIR)
 	(cd doc && tar $(TAR_OPT_NO) -cf - . | (cd  $(DOCDIR) && tar -xf -))
-
-# Rule: install-www - Install to WWWCGIDIR
-install-www:
-	test -d $(WWWCGIDIR)
-	$(INSTALL_BIN) $(INSTALL_OBJS_BIN) $(WWWCGIDIR)
 
 # Rule: install - Run all install targets
 install: doc install-bin install-man
