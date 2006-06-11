@@ -138,7 +138,7 @@ release:
 	@tar -ztvf $(RELEASE_FILE_PATH)
 
 # Rule: release-list - [maintenance] List content of release.
-release-list:
+list-release:
 	$(TAR) -ztvf $(TAR_FILE_WORLD_LS)
 
 # Rule: release-deb - [maintenance] Make Debian *.deb release
@@ -150,6 +150,11 @@ release-deb:
 	cp $(TAR_FILE_WORLD_LS) $(DEBDIR)/$(TAR_FILE_DEB_ORIG)
 	cp -r debian/ $(DEBDIR)/*/
 	$(MAKE) -C $(DEBDIR)/*/ -f debian/debian.mk deb
+
+# Rule: release-list - [maintenance] List content of Debian release.
+list-deb:
+	dpkg --info $(DEBDIR)/*deb
+	dpkg --contents $(DEBDIR)/*deb
 
 # Rule: sf-upload-release - [Maintenence] Sourceforge; Upload documentation
 sf-upload-release:
