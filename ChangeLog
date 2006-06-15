@@ -1,7 +1,11 @@
 2006-06-15  Jari Aalto  <jari aalto A T cante net>
 
-	* debian/rules: (install): Change `cgi_prefix' from cgi-bin to
-	cgi-lib. Debian policy change in 3.7.0.
+	* debian/README.Debian: Use dpkg -L to show package content.
+
+	* debian/rules: (install): Change of `cgi_prefix' from cgi-bin to
+	cgi-lib was put in Debian policy change in 3.7.0. However this
+	is dead because apache does not support it. See discussion.
+	<http://permalink.gmane.org/gmane.linux.debian.devel.general/100073>
 
 	* Makefile (cgi_prefix): New. Now configurable.
 
