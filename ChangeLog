@@ -6,6 +6,7 @@
 	cgi-lib was put in Debian policy change in 3.7.0. However this
 	is dead because apache does not support it. See discussion.
 	<http://permalink.gmane.org/gmane.linux.debian.devel.general/100073>
+	the change to policy was reverted in 3.7.2.0
 
 	* Makefile (cgi_prefix): New. Now configurable.
 
