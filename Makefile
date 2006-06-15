@@ -8,6 +8,7 @@ DESTDIR		=
 prefix		= /usr
 exec_prefix	= $(prefix)/local
 man_prefix	= $(prefix)/local
+cgi_prefix      = $(prefix)/lib/cgi-bin
 
 PACKAGE		= wwwflypaper
 PL		= $(PACKAGE).pl
@@ -52,7 +53,7 @@ ETCDIR		= $(DESTDIR)$/etc/$(PACKAGE)
 SHAREDIR	= $(DESTDIR)$(prefix)/share/$(PACKAGE)
 LIBDIR		= $(DESTDIR)$(prefix)/lib/$(PACKAGE)
 DOCDIR		= $(DESTDIR)$(prefix)/share/doc/$(PACKAGE)
-WWWCGIDIR	= $(DESTDIR)/usr/lib/cgi-bin
+WWWCGIDIR	= $(DESTDIR)$(cgi_prefix)
 
 DEBUG		= -g
 CC		= gcc

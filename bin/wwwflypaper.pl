@@ -58,7 +58,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify these values.
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.5 2006/06/11 10:29:45 jaalto Exp $'; #font '
+my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.6 2006/06/15 11:20:41 jaalto Exp $'; #font '
 my $VERSION   = (split ' ', $FILE_ID)[2];
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
@@ -2208,10 +2208,10 @@ Here is an example setup for Apache web server.
     </Location>
 
 Place the program under I<$WWWCGIBIN> directory (e.g. C<
-/usr/lib/cgi-bin/> if that's the Web server's CGI root) and the fly
-paper trap is ready. Notice that the caret(^) matches every page
-referred under C</email> location and redirects it to the program.
-Verify the effect by accessing the page with browser:
+/usr/lib/cgi-bin/> or C<usr/lib/cgi-lib/>) if that's the Web server's
+CGI root) and the fly paper trap is ready. Notice that the caret(^)
+matches every page referred under C</email> location and redirects it
+to the program. Verify the effect by accessing the page with browser:
 
    http://your.example.com/email
 

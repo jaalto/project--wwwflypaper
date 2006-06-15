@@ -1,7 +1,14 @@
+2006-06-15  Jari Aalto  <jari aalto A T cante net>
+
+	* debian/rules: (install): Change `cgi_prefix' from cgi-bin to
+	cgi-lib. Debian policy change in 3.7.0.
+
+	* Makefile (cgi_prefix): New. Now configurable.
+
 2006-06-11  Jari Aalto  <jaalto A T cante>
 
 	* Makefile: Numerous, numerous changes. Added targets: release,
-	release-list, doc, docs, sf-upload-release, install-www,
+	release-deb, doc, docs, sf-upload-release, install-www, list-deb.
 
 	* bin/wwwflypaper.pl (EmailCompose): New.
 	(Main): Completely new algorithm. Now shuffless all words
