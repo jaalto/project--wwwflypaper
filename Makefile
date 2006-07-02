@@ -152,6 +152,11 @@ release-deb:
 	cp -r debian/ $(DEBDIR)/*/
 	$(MAKE) -C $(DEBDIR)/*/ -f debian/debian.mk deb
 
+# Rule: lintian - [maintenance] Check content of Debian package.
+lintian:
+	cd $(DEBDIR); \
+	lintian $$(ls -1t | egrep '.*changes' | head -1) 2>&1 | tee pkg-lintian.log
+
 # Rule: release-list - [maintenance] List content of Debian release.
 list-deb:
 	dpkg --info $(DEBDIR)/*deb
