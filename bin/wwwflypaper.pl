@@ -57,7 +57,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify this
 
-my $VERSION   = '2011.1209.1036';
+my $VERSION   = '2011.1209.1037';
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -2128,13 +2128,13 @@ wwwflypaper - Web page poison for email harvesters
 
 =head1 SYNOPSIS
 
-  wwwflypaper(.pl) [OPTIONS] [URLROOT]
+  wwwflypaper [OPTIONS] [URLROOT]
 
 =head1 OPTIONS
 
 =over 4
 
-=item B<--help|--help-html|--help-man>
+=item B<--help, --help-html, --help-man>
 
 Print help. The default format is text. Option B<--help-html> displays
 help in HTML format and --help-man in Unix manual page format.
