@@ -1,27 +1,30 @@
 #!/usr/bin/perl
 #
-# wwwflypaper.pl -- Generate a real-looking bogus web page
+#   Copyright information
 #
-#       Copyright (C) 2005-2007 Jari Aalto
-#       Created:      2005-09
-#       Keywords:     Perl, HTML, fake web page
+#	Copyright (C) 2005-2012 Jari Aalto
 #
-#       This program is free software; you can redistribute it and/or
-#       modify it under the terms of the GNU General Public License as
-#       published by the Free Software Foundation; either version 2 of
-#       the License, or (at your option) any later version.
+#   License
 #
-#       This program is distributed in the hope that it will be useful, but
-#       WITHOUT ANY WARRANTY; without even the implied warranty of
-#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#       General Public License for more details.
-#       Visit <http://www.gnu.org/copyleft/gpl.html>.
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
 #
-#   Introduction
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#	GNU General Public License for more details at
+#	<http://www.gnu.org/licenses/>.
 #
-#       Please start this program with option
+#   Description
 #
-#           --help      to get the help page
+#       Web page poison for email harvesters. See option:
+#
+#           --help
+#
+#        Copy this file to CGI directory (e.g. /usr/lib/cgi-bin/) and
+#	 set up Web page trap e.g. at http://example.com/mailing-list
 #
 #   Profiling results
 #
@@ -46,20 +49,15 @@
 #        0.00       - -0.000      2        -      -  autouse::import
 #        0.00       - -0.000      1        -      -  main::AddLinks
 #           -       - -0.001    179        -      -  main::GetLetter
-#
-# Debian:
-#
-#  cp fakemail.pl /usr/lib/cgi-bin/
 
 use strict;
 
 use autouse 'Pod::Text' => qw( pod2text );
 use autouse 'Pod::Html' => qw( pod2html );
 
-#  Do not modify these values.
+#  Do not modify this
 
-my $FILE_ID   = '$Id: wwwflypaper.pl,v 1.6 2006/06/15 11:20:41 jaalto Exp $'; #font '
-my $VERSION   = (split ' ', $FILE_ID)[2];
+my $VERSION   = '2011.1209.1033';
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -69,6 +67,7 @@ my $CHARSET   = "charset=iso-8859-1";
 my $ROOTDIR   = "/email";
 
 #  System wide configuration file
+
 my $ETCCONF   = "/etc/wwwflypaper/config";
 
 #  Two random words make the "list name"
@@ -2311,7 +2310,7 @@ sub Help (;$ $)
     else
     {
         pod2text $0;
-	print "Version: $FILE_ID\n";
+	print "Version: $VERSION\n";
     }
 
     exit 0;
