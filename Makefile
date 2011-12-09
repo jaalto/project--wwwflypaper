@@ -191,12 +191,12 @@ install-www:
 	$(INSTALL_BIN) -d $(WWWCGIDIR)
 	$(INSTALL_BIN) $(INSTALL_OBJS_BIN) $(WWWCGIDIR)/$(PACKAGE)
 
-# Rule: install-bin - Install to MANDIR1
+# Rule: install-man - Install to MANDIR1
 install-man:
 	$(INSTALL_BIN) -d $(MANDIR1)
 	$(INSTALL_DATA) $(INSTALL_OBJS_MAN1) $(MANDIR1)
 
-# Rule: install-doc - Install to DOCDIR1
+# Rule: install-doc - Install to DOCDIR
 install-doc:
 	$(INSTALL_BIN) -d $(DOCDIR)
 	(cd doc && tar $(TAR_OPT_NO) -cf - . | (cd  $(DOCDIR) && tar -xf -))
