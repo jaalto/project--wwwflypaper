@@ -24,7 +24,7 @@
 #           --help
 #
 #        Copy this file to CGI directory (e.g. /usr/lib/cgi-bin/) and
-#	 set up Web page trap e.g. at http://example.com/mailing-list
+#	 set up Web page trap e.g. at http://example.com/email
 #
 #   Profiling results
 #
@@ -57,7 +57,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify this
 
-my $VERSION   = '2011.1209.1038';
+my $VERSION   = '2011.1209.1048';
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -2130,35 +2130,6 @@ wwwflypaper - Web page poison for email harvesters
 
   wwwflypaper [OPTIONS] [URLROOT]
 
-=head1 OPTIONS
-
-=over 4
-
-=item B<--help, --help-html, --help-man>
-
-Print help. The default format is text. Option B<--help-html> displays
-help in HTML format and --help-man in manual page format.
-
-=item B<--version>
-
-Print version information.
-
-=back
-
-=head1 ARGUMENTS
-
-=over 4
-
-=item B<URLROOT>
-
-In the generated web pages there are links that point back to the
-page. These links (A HREF's in HTML) are by default prefixed with
-C</email>. If the trap in the web server is put somewhere else, the
-change must be told to the program in order to generate correct links.
-See exmaples for more information.
-
-=back
-
 =head1 DESCRIPTION
 
 Generate random list of real-looking bogus email addresses in the
@@ -2180,9 +2151,32 @@ separate dictionary files are needed.
 The restrictive licensing terms of wpoison(1) inspired to
 write a free alternative -- this program.
 
+=head1 OPTIONS
+
+=over 4
+
+=item B<--help, --help-html, --help-man>
+
+Print help. The default format is text. Option B<--help-html> displays
+help in HTML format and --help-man in manual page format.
+
+=item B<--version>
+
+Print version information.
+
+=back
+
+Argument B<URLROOT>:
+
+In the generated web pages there are links that point back to the
+page. These links (A HREF's in HTML) are by default prefixed with
+C</email>. If the trap in the web server is put somewhere else, the
+change must be told to the program in order to generate correct links.
+See exmaples for more information.
+
 =head1 EXAMPLES
 
-Let's suppose that local web server's robots file is located at
+Let's suppose that local web server's robots file at
 I<$WWWROOT/robots.txt> announces a forbidden fruit. The well behaving
 search robots will ignore all URLs that are banned by the robots file.
 But the email harvesting programs will surely want to take a look into
@@ -2206,19 +2200,19 @@ Here is an example setup for Apache web server.
 	options +ExecCGI -Indexes
     </Location>
 
-Place the program under I<$WWWCGIBIN> directory (e.g. C<
-/usr/lib/cgi-bin/> or C<usr/lib/cgi-lib/>) if that's the Web server's
+Place the program under I<$WWWCGIBIN> directory (e.g.
+C</usr/lib/cgi-bin/> or C<usr/lib/cgi-lib/>) if that's the Web server's
 CGI root) and the fly paper trap is ready. Notice that the caret(^)
 matches every page referred under C</email> location and redirects it
 to the program. Verify the effect by accessing the page with browser:
 
-   http://your.example.com/email
+   http://yoursite.example.com/email
 
 The default A HEREF links are set to I</email>, but this needs to
 be changed from command line if another URL location in the web
 server is used. Like if the trap were in:
 
-    wwwflypaper.pl /mailing-list
+    wwwflypaper /mailing-list
 
 =head1 TROUBLESHOOTING
 
@@ -2230,17 +2224,16 @@ None used.
 
 =head1 FILES
 
-If no command line argument for URLROOT, try to read
-C</etc/wwwflypaper/config> file if it exists. It set's the default
-location of URLROOT. This is for system wide program installation on
-the Web server.
+If there is no command line argument for URLROOT, try to read
+C</etc/wwwflypaper/config> file if it exists. This is for system wide
+installation on the Web server.
 
 =head1 SEE ALSO
 
 wpoison(1)
 
-The wpoison <http://www.monkeys.com/wpoison>
-does not comply with Debian Free Software Guidelines. See
+The wpoison <http://www.monkeys.com/wpoison> Unfortunately did not
+comply with the Debian Free Software Guidelines. See
 <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=122929> and
 discussion at
 <http://lists.debian.org/debian-legal/2001/12/msg00388.html>
@@ -2255,36 +2248,21 @@ robots.txt standard is at <http://www.robotstxt.org>.
 
 =head1 BUGS
 
-The programs is designed as fast as possible and to be completely self
-standing. There are no plans to support external lookup dictionaries
-or other external configurations.
+The programs is designed to be self standing and fast in order to
+lessen CGI overhead.. There are no plans to support external lookup
+dictionaries or other external configurations.
 
 =head1 AVAILABILITY
 
 http://freecoe.com/projects/wwwflypaper
 
-=head1 SCRIPT CATEGORIES
+=head1 AUTHORS
 
-CPAN/Administrative
+Program was written by Jari Aalto.
 
-=head1 PREREQUISITES
-
-No Perl CPAN modules are used.
-
-=head1 COREQUISITES
-
-Only modules from standard Perl are used.
-
-=head1 OSNAMES
-
-C<any>
-
-=head1 AUTHOR
-
-Copyright (C) 2005-2007 Jari Aalto.
-This program is free software; you can redistribute and/or modify program
-under the same terms as Perl itself or in terms of Gnu General Public
-licence v2 or later.
+Released under license GNU GPL version 2 or (at your option) any later
+version. For more information about license, visit
+<http://www.gnu.org/copyleft/gpl.html>.
 
 =cut
 
