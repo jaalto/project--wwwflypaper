@@ -1,0 +1,18 @@
+INSYALL: wwwflypaper - Web page poison for email harvesters
+-----------------------------------------------------------
+
+The program is installed without the Perl .pl suffix. To
+install in /usr/local
+
+   make install
+
+To install for private use
+
+   make DESTDIR=$HOME prefix=/usr/local install
+
+To make an install package:
+
+   make DESTDIR=tmp exec_prefix=/usr man_prefix=/usr/share install
+   (cd tmp/ && tar -jcvf package.tar.bz2 usr)
+
+End of file
