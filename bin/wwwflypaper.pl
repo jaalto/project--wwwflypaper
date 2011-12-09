@@ -57,7 +57,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify this
 
-my $VERSION   = '2011.1209.1033';
+my $VERSION   = '2011.1209.1035';
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -2261,7 +2261,7 @@ or other external configurations.
 
 =head1 AVAILABILITY
 
-<URL Where to get the program>
+http://freecoe.com/projects/wwwflypaper
 
 =head1 SCRIPT CATEGORIES
 
