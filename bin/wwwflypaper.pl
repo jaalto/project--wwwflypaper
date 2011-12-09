@@ -57,7 +57,7 @@ use autouse 'Pod::Html' => qw( pod2html );
 
 #  Do not modify this
 
-my $VERSION   = '2011.1209.1035';
+my $VERSION   = '2011.1209.1036';
 
 my $DOCTYPE   = qq(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">);
 my $CHARSET   = "charset=iso-8859-1";
@@ -2124,7 +2124,7 @@ my @sname = qw
 
 =head1 NAME
 
-wwwflypaper -  Generate a real-looking bogus web page
+wwwflypaper - Web page poison for email harvesters
 
 =head1 SYNOPSIS
 
